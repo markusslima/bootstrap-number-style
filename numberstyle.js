@@ -1,10 +1,10 @@
 /*
- * Numberstyle
- * doc: http://markusslima.github.io/bootstrap-filestyle/
- * github: https://github.com/markusslima/bootstrap-filestyle
+ * Bootstrap Number Style
+ * doc: http://markusslima.github.io/bootstrap-number-style/
+ * github: https://github.com/markusslima/bootstrap-number-style
  *
- * Copyright (c) 2017 Markus Vinicius da Silva Lima
- * Version 2.1.0
+ * Copyright (c) 2018 Markus Vinicius da Silva Lima
+ * Version 1.0.0
  * Licensed under the MIT license.
  */
 (function($) {
@@ -12,28 +12,28 @@
 
     var nextId = 0;
 
-    var Numberstyle = function(element, options) {
+    var BNumberStyle = function(element, options) {
         this.options = options;
-        this.$elementNumberstyle = [];
+        this.$elementBNumberStyle = [];
         this.$element = $(element);
     };
 
-    Numberstyle.prototype = {
+    BNumberStyle.prototype = {
         destroy : function() {
-            this.$element.removeAttr('style').removeData('numberstyle');
-            this.$elementNumberstyle.remove();
+            this.$element.removeAttr('style').removeData('bNumberStyle');
+            this.$elementBNumberStyle.remove();
         },
 
         goMin : function(value) {
             if (value === true || value === false) {
                 this.options.disabled = value;
                 this.$element.prop('disabled', this.options.disabled);
-                this.$elementNumberstyle.find('label').prop('disabled', this.options.disabled);
+                this.$elementBNumberStyle.find('label').prop('disabled', this.options.disabled);
 
                 if (this.options.disabled)
-                    this.$elementNumberstyle.find('label').css('opacity', '0.65');
+                    this.$elementBNumberStyle.find('label').css('opacity', '0.65');
                 else
-                    this.$elementNumberstyle.find('label').css('opacity', '1');
+                    this.$elementBNumberStyle.find('label').css('opacity', '1');
             } else {
                 return this.options.disabled;
             }
@@ -55,12 +55,10 @@
 
         onMinusAfter : function(value) {},
 
-        setVal: function () {},
-
         placeholder : function(value) {
             if (value !== undefined) {
                 this.options.placeholder = value;
-                this.$elementNumberstyle.find('input').attr('placeholder', value);
+                this.$elementBNumberStyle.find('input').attr('placeholder', value);
             } else {
                 return this.options.placeholder;
             }
@@ -69,16 +67,16 @@
         constructor : function() {
             var _self = this,
                 clone = _self.$element.clone(),
-                spinner = $('<div class="quantity"></div>')
+                spinner = $('<div class="bNumberStyle"></div>')
                             .append(clone)
-                            .append('<div class="quantity-nav"><div class="quantity-button quantity-up">+</div><div class="quantity-button quantity-down">-</div></div>');
+                            .append('<div class="bNumberStyle-nav"><div class="bNumberStyle-button bNumberStyle-up">+</div><div class="bNumberStyle-button bNumberStyle-down">-</div></div>');
 
             _self.$element.before(spinner);
             _self.$element.remove();
 
             var input = spinner.find('input[type="number"]'),
-                btnUp = spinner.find(".quantity-up"),
-                btnDown = spinner.find(".quantity-down"),
+                btnUp = spinner.find(".bNumberStyle-up"),
+                btnDown = spinner.find(".bNumberStyle-down"),
                 step = Number(input.attr("step")) || 1,
                 min = Number(input.attr("min")),
                 max = Number(input.attr("max"));
@@ -120,21 +118,23 @@
         }
     };
 
-    var old = $.fn.numberstyle;
+    var old = $.fn.bNumberStyle;
 
-    $.fn.numberstyle = function(option, value) {
+    $.fn.bNumberStyle = function(option, value) {
         var get = '', element = this.each(function() {
-            if ($(this).attr('type') === 'file') {
-                var $this = $(this), data = $this.data('numberstyle'), options = $.extend({}, $.fn.numberstyle.defaults, option, typeof option === 'object' && option);
+            if ($(this).attr('type') === 'number') {
+                var $this = $(this), data = $this.data('bNumberStyle'), options = $.extend({}, $.fn.bNumberStyle.defaults, option, typeof option === 'object' && option);
 
                 if (!data) {
-                    $this.data('numberstyle', ( data = new Filestyle(this, options)));
+                    $this.data('bNumberStyle', ( data = new BNumberStyle(this, options)));
                     data.constructor();
                 }
 
                 if ( typeof option === 'string') {
                     get = data[option](value);
                 }
+            } else {
+                console.error("It's not a number field");
             }
         });
 
@@ -145,49 +145,32 @@
         }
     };
 
-    $.fn.numberstyle.defaults = {
-        'text' : 'Choose file',
-        'htmlIcon' : '',
-        'btnClass' : 'btn-secondary',
-        'size' : 'nr',
-        'input' : true,
-        'badge' : false,
-        'badgeName': 'badge-light',
-        'buttonBefore' : false,
-        'dragdrop' : true,
+    $.fn.bNumberStyle.defaults = {
+        'min' : '',
+        'max' : '',
+        'step' : 1,
         'disabled' : false,
-        'placeholder': '',
-        'onChange': function () {}
+        'onPlusBefore' : function () {},
+        'onPlusAfter' : function () {},
+        'onMinusBefore' : function () {},
+        'onMinusAfter' : function () {}
     };
 
-    $.fn.numberstyle.noConflict = function() {
-        $.fn.numberstyle = old;
+    $.fn.bNumberStyle.noConflict = function() {
+        $.fn.bNumberStyle = old;
         return this;
     };
 
     $(function() {
-        $('.numberstyle').each(function() {
+        $('.bNumberStyle').each(function() {
             var $this = $(this), options = {
-                'input' : $this.attr('data-input') !== 'false',
-                'htmlIcon' : $this.attr('data-icon'),
-                'buttonBefore' : $this.attr('data-buttonBefore') === 'true',
-                'disabled' : $this.attr('data-disabled') === 'true',
-                'size' : $this.attr('data-size'),
-                'text' : $this.attr('data-text'),
-                'btnClass' : $this.attr('data-btnClass'),
-                'badge' : $this.attr('data-badge') === 'true',
-                'dragdrop' : $this.attr('data-dragdrop') !== 'false',
-                'badgeName' : $this.attr('data-badgeName'),
-                'placeholder': $this.attr('data-placeholder')
+                'min' : $this.attr('min'),
+                'max' : $this.attr('max'),
+                'step' : $this.attr('step'),
+                'disabled' : $this.attr('disabled')
             };
 
-            $this.numberstyle(options);
+            $this.bNumberStyle(options);
         });
     });
-
-    $.fn.numberstyle = function () {
-    $(this).each(function() {
-        
-    });
-}
 })(window.jQuery);
