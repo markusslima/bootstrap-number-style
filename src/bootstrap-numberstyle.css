@@ -1,4 +1,12 @@
-.bNumberStyle {
+/*
+ * Bootstrap Number Style
+ * Docs: http://markusslima.github.io/bootstrap-number-style/
+ * github: https://github.com/markusslima/bootstrap-number-style
+ * Copyright (c) 2018 Markus Vinicius da Silva Lima
+ * Version 1.0.0
+ * Licensed under the MIT license.
+ */
+ .bNumberStyle {
     position: relative;
 }
 

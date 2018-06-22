@@ -18,7 +18,7 @@
     };
 
     BNumberStyle.prototype = {
-        destroy : function() {
+        destroy : function () {
             var clone = this.$element.clone();
             this.$element.remove();
             this.$elementBNumberStyle.before(clone);
@@ -53,6 +53,30 @@
                 this.options.step = value;
             } else {
                 return this.options.step;
+            }
+        },
+
+        onBefore : function (value) {
+            if (value !== undefined) {
+                if (typeof value == 'function') {
+                    this.options.onBefore = value;
+                } else {
+                    console.error('This "onBefore" not a function.')
+                }
+            } else {
+                return this.options.onBefore;
+            }
+        },
+
+        onAfter : function (value) {
+            if (value !== undefined) {
+                if (typeof value == 'function') {
+                    this.options.onAfter = value;
+                } else {
+                    console.error('This "onAfter" not a function.')
+                }
+            } else {
+                return this.options.onAfter;
             }
         },
 
@@ -125,8 +149,8 @@
                 clone = this.$element.clone();
             
             this.$elementBNumberStyle = $('<div class="bNumberStyle"></div>')
-                            .append(clone)
-                            .append('<div class="bNumberStyle-nav"><div class="bNumberStyle-button bNumberStyle-up">+</div><div class="bNumberStyle-button bNumberStyle-down">-</div></div>');
+                .append(clone)
+                .append('<div class="bNumberStyle-nav"><div class="bNumberStyle-button bNumberStyle-up">+</div><div class="bNumberStyle-button bNumberStyle-down">-</div></div>');
 
             this.$element.before(this.$elementBNumberStyle);
             this.$element.remove();
@@ -165,7 +189,12 @@
             });
 
             this.$elementBNumberStyle.find('.bNumberStyle-up').on('click', function () {
-                _self.options.onPlusBefore();
+                if (typeof _self.options.onBefore == 'function') {
+                    _self.options.onBefore();
+                }
+                if (typeof _self.options.onPlusBefore == 'function') {
+                    _self.options.onPlusBefore();
+                }
                 var oldValue = parseFloat(_self.$element.val());
                 if (oldValue >= _self.options.max && _self.options.max != '') {
                     var newVal = oldValue;
@@ -175,11 +204,21 @@
                 _self.$element
                     .val(newVal)
                     .trigger("change");
-                _self.options.onPlusAfter();
+                if (typeof _self.options.onPlusAfter == 'function') {
+                    _self.options.onPlusAfter();
+                }
+                if (typeof _self.options.onAfter == 'function') {
+                    _self.options.onAfter
+                }
             });
 
             this.$elementBNumberStyle.find('.bNumberStyle-down').on('click', function () {
-                _self.options.onMinusBefore();
+                if (typeof _self.options.onBefore == 'function') {
+                    _self.options.onBefore();
+                }
+                if (typeof _self.options.onMinusBefore == 'function') {
+                    _self.options.onMinusBefore();
+                }
                 var oldValue = parseFloat(_self.$element.val());
                 if (oldValue <= _self.options.min && _self.options.max != '') {
                     var newVal = oldValue;
@@ -189,7 +228,12 @@
                 _self.$element
                     .val(newVal)
                     .trigger("change");
-                _self.options.onMinusAfter();
+                if (typeof _self.options.onMinusAfter == 'function') {
+                    _self.options.onMinusAfter();
+                }
+                if (typeof _self.options.onAfter == 'function') {
+                    _self.options.onAfter
+                }
             });
         }
     };
@@ -222,6 +266,8 @@
         'max' : '',
         'step' : 1,
         'disabled' : false,
+        'onBefore' : function () {},
+        'onAfter' : function () {},
         'onPlusBefore' : function () {},
         'onPlusAfter' : function () {},
         'onMinusBefore' : function () {},

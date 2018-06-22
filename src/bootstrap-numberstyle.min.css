@@ -1,0 +1,9 @@
+/*
+ * Bootstrap Number Style
+ * Docs: http://markusslima.github.io/bootstrap-number-style/
+ * github: https://github.com/markusslima/bootstrap-number-style
+ * Copyright (c) 2018 Markus Vinicius da Silva Lima
+ * Version 1.0.0
+ * Licensed under the MIT license.
+ */
+.bNumberStyle,.bNumberStyle-nav{position:relative}input[type=number]{-moz-appearance:textfield}.bNumberStyle input{height:34px;line-height:1.65;float:left;display:block;padding:0 0 0 7px;margin:0;border:1px solid #ccc}.bNumberStyle input:focus{outline:0}.bNumberStyle-nav{float:left;height:32px;margin-left:-1px}.bNumberStyle-button{position:relative;cursor:pointer;border-left:1px solid #ccc;width:20px;text-align:center;color:#333;font-size:13px;font-family:monospace!important;line-height:17px;-webkit-transform:translateX(-100%);transform:translateX(-100%);-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;-o-user-select:none;user-select:none}.bNumberStyle-button.bNumberStyle-up{position:absolute;height:calc(50% + .5px);top:1px;border:1px solid #ccc;border-width:0 0 1px 1px;background:#fff;line-height:15px}.bNumberStyle-button.bNumberStyle-down{position:absolute;height:calc(50% + .5px);bottom:-1px;border:1px solid #ccc;border-width:1px 0 0 1px;background:#fff;line-height:13px}.bNumberStyle-button.bNumberStyle-down.active,.bNumberStyle-button.bNumberStyle-up.active{background:#dedede}
