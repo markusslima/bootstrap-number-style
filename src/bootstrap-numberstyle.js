@@ -56,6 +56,18 @@
             }
         },
 
+        onCreate : function (value) {
+            if (value !== undefined) {
+                if (typeof value == 'function') {
+                    this.options.onCreate = value;
+                } else {
+                    console.error('This "onCreate" not a function.')
+                }
+            } else {
+                return this.options.onCreate;
+            }
+        },
+
         onBefore : function (value) {
             if (value !== undefined) {
                 if (typeof value == 'function') {
@@ -157,13 +169,13 @@
 
             this.$element = clone;
 
-            if (this.options.min == '' && this.$element.attr('min') != '') {
+            if (this.options.min == '' && !isNaN(this.$element.attr('min'))) {
                 this.options.min = this.$element.attr('min');
             }
-            if (this.options.max == '' && this.$element.attr('max') != '') {
+            if (this.options.max == '' && !isNaN(this.$element.attr('max'))) {
                 this.options.max = this.$element.attr('max');
             }
-            if (this.options.step == 1 && this.$element.attr('step') != '') {
+            if (this.options.step == 1 && !isNaN(this.$element.attr('step'))) {
                 this.options.step = this.$element.attr('step');
             }
 
@@ -189,52 +201,58 @@
             });
 
             this.$elementBNumberStyle.find('.bNumberStyle-up').on('click', function () {
-                if (typeof _self.options.onBefore == 'function') {
-                    _self.options.onBefore();
-                }
-                if (typeof _self.options.onPlusBefore == 'function') {
-                    _self.options.onPlusBefore();
-                }
                 var oldValue = parseFloat(_self.$element.val());
                 if (oldValue >= _self.options.max && _self.options.max != '') {
                     var newVal = oldValue;
                 } else {
+                    if (typeof _self.options.onBefore == 'function') {
+                        _self.options.onBefore(_self.$element);
+                    }
+                    if (typeof _self.options.onPlusBefore == 'function') {
+                        _self.options.onPlusBefore(_self.$element);
+                    }
+
                     var newVal = oldValue + parseFloat(_self.options.step);
-                }
-                _self.$element
-                    .val(newVal)
-                    .trigger("change");
-                if (typeof _self.options.onPlusAfter == 'function') {
-                    _self.options.onPlusAfter();
-                }
-                if (typeof _self.options.onAfter == 'function') {
-                    _self.options.onAfter
+                    _self.$element
+                        .val(newVal)
+                        .trigger("change");
+
+                    if (typeof _self.options.onPlusAfter == 'function') {
+                        _self.options.onPlusAfter(_self.$element);
+                    }
+                    if (typeof _self.options.onAfter == 'function') {
+                        _self.options.onAfter(_self.$element);
+                    }
                 }
             });
 
             this.$elementBNumberStyle.find('.bNumberStyle-down').on('click', function () {
-                if (typeof _self.options.onBefore == 'function') {
-                    _self.options.onBefore();
-                }
-                if (typeof _self.options.onMinusBefore == 'function') {
-                    _self.options.onMinusBefore();
-                }
                 var oldValue = parseFloat(_self.$element.val());
                 if (oldValue <= _self.options.min && _self.options.max != '') {
                     var newVal = oldValue;
                 } else {
+                    if (typeof _self.options.onBefore == 'function') {
+                        _self.options.onBefore(_self.$element);
+                    }
+                    if (typeof _self.options.onMinusBefore == 'function') {
+                        _self.options.onMinusBefore(_self.$element);
+                    }
                     var newVal = oldValue - parseFloat(_self.options.step);
-                }
-                _self.$element
-                    .val(newVal)
-                    .trigger("change");
-                if (typeof _self.options.onMinusAfter == 'function') {
-                    _self.options.onMinusAfter();
-                }
-                if (typeof _self.options.onAfter == 'function') {
-                    _self.options.onAfter
+                    _self.$element
+                        .val(newVal)
+                        .trigger("change");
+                    if (typeof _self.options.onMinusAfter == 'function') {
+                        _self.options.onMinusAfter(_self.$element);
+                    }
+                    if (typeof _self.options.onAfter == 'function') {
+                        _self.options.onAfter(_self.$element);
+                    }
                 }
             });
+
+            if (typeof this.options.onCreate == 'function') {
+                this.options.onCreate(this.$element);
+            }
         }
     };
 
@@ -266,6 +284,7 @@
         'max' : '',
         'step' : 1,
         'disabled' : false,
+        'onCreate' : function () {},
         'onBefore' : function () {},
         'onAfter' : function () {},
         'onPlusBefore' : function () {},

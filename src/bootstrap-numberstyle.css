@@ -21,13 +21,12 @@ input[type=number] {
 }
 
 .bNumberStyle input {
-    height: 34px;
+    height: 34px !important;
     line-height: 1.65;
     float: left;
     display: block;
-    padding: 0;
+    padding: 0 0 0 7px !important;
     margin: 0;
-    padding-left: 7px;
     border: 1px solid #ccc;
 }
 
@@ -37,9 +36,9 @@ input[type=number] {
 
 .bNumberStyle-nav {
     float: left;
-    position: relative;
-    height: 32px;
+    height: 34px;
     margin-left: -1px;
+    position: relative;
 }
 
 .bNumberStyle-button {
@@ -63,22 +62,22 @@ input[type=number] {
 
 .bNumberStyle-button.bNumberStyle-up {
     position: absolute;
-    height: calc(50% + 0.5px);
-    top: 1px;
+    height: 50%;
+    top: 0px;
     border: 1px solid #ccc;
-    border-width: 0 0 1px 1px;
     background: #fff;
     line-height: 15px;
+    right: -23px;
 }
 
 .bNumberStyle-button.bNumberStyle-down {
     position: absolute;
-    height: calc(50% + 0.5px);
-    bottom: -1px;
+    height: calc(50% - .5px);
+    bottom: -2px;
     border: 1px solid #ccc;
-    border-width: 1px 0 0 1px ;
     background: #fff;
     line-height: 13px;
+    right: -23px;
 }
 .bNumberStyle-button.bNumberStyle-up.active,
 .bNumberStyle-button.bNumberStyle-down.active {
